@@ -1,0 +1,9 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    def appDependencies = rootProject.ext.appDependencies
+    def testDependencies = rootProject.ext.testDependencies
+
+    implementation rootProject.ext.kotlin
+    implementation appDependencies.rxKotlin
+}

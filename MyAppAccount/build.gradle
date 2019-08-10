@@ -1,0 +1,15 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    def appDependencies = rootProject.ext.appDependencies
+    def testDependencies = rootProject.ext.testDependencies
+
+    implementation project(':MyAppKit')
+
+    implementation rootProject.ext.kotlin
+    implementation appDependencies.rxKotlin
+
+    compileOnly appDependencies.javaxInject
+
+    testImplementation testDependencies.jUnit
+}

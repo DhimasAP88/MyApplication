@@ -1,0 +1,1 @@
+include ':app', ':MyAppData', ':MyAppNetwork', ':MyAppKit', ':MyAppTransaction', ':MyAppAccount'

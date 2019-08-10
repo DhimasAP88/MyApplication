@@ -1,0 +1,57 @@
+def globalConfiguration = rootProject.extensions.getByName("ext")
+
+android {
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["buildToolsVersion"]
+    flavorDimensions globalConfiguration["flavorDimensions"]
+
+    defaultConfig {
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+        testInstrumentationRunner globalConfiguration["testInstrumentationRunner"]
+
+        buildConfigField 'String', 'app_type', appType
+        buildConfigField "int", "API_TIMEOUT", appTimeout
+        buildConfigField 'boolean', 'DEBUG_ANALYTIC', 'false'
+    }
+
+    productFlavors {
+        development {
+            def developmentFlavorsConfig = globalConfiguration["developmentFlavorsConfig"]
+            versionCode developmentFlavorsConfig.versionCode
+            versionName developmentFlavorsConfig.versionName
+            dimension developmentFlavorsConfig.dimension
+
+            resValue "string", "app_name", developmentAppName
+            resValue "string", "content_provider", developmentContentProvider
+            buildConfigField "String", "base_url", baseUrl
+        }
+
+        staging {
+            def stagingFlavorsConfig = globalConfiguration["stagingFlavorsConfig"]
+            versionCode stagingFlavorsConfig.versionCode
+            versionName stagingFlavorsConfig.versionName
+            dimension stagingFlavorsConfig.dimension
+
+            resValue "string", "app_name", stagingAppName
+            resValue "string", "content_provider", stagingContentProvider
+            buildConfigField "String", "base_url", baseUrl
+        }
+
+        production {
+            def productionFlavorsConfig = globalConfiguration["productionFlavorsConfig"]
+            versionCode productionFlavorsConfig.versionCode
+            versionName productionFlavorsConfig.versionName
+            dimension productionFlavorsConfig.dimension
+
+            resValue "string", "app_name", productionAppName
+            resValue "string", "content_provider", productionContentProvider
+            buildConfigField "String", "base_url", baseUrl
+        }
+
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
