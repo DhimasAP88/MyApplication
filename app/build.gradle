@@ -108,6 +108,9 @@ dependencies {
     implementation(appDependencies.rxBinding) {
         appDependencies.rxJavaExclude
     }
+    implementation appDependencies.fastAdapter
+    implementation appDependencies.fastAdapterCommons
+    implementation appDependencies.fastAdapterExtension
 
     kapt appDependencies.daggerCompiler
     kapt appDependencies.daggerAndroidProcessor

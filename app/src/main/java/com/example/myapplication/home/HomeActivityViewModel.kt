@@ -21,6 +21,7 @@ interface HomeActivityViewModelType : ViewModelType {
     }
     interface Outputs{
         val showResultSum: Observable<String>
+        val showListComment: Observable<List<HomeActivityItemViewModelType>>
     }
 }
 class HomeActivityViewModel(val getSumUseCase: SumUseCase) :
@@ -30,6 +31,7 @@ class HomeActivityViewModel(val getSumUseCase: SumUseCase) :
     HomeActivityViewModelType.Outputs {
 
     private val sumResult = PublishSubject.create<String>()
+    private val listComment = PublishSubject.create<List<HomeActivityItemViewModelType>>()
     override val inputs: HomeActivityViewModelType.Inputs
         get() = this
     override val outputs: HomeActivityViewModelType.Outputs
@@ -38,9 +40,11 @@ class HomeActivityViewModel(val getSumUseCase: SumUseCase) :
 
     override val showResultSum: Observable<String>
         get() = sumResult
+    override val showListComment: Observable<List<HomeActivityItemViewModelType>>
+        get() = listComment
 
 
-    override fun sumNumber(firstNumber: String, secondNumber: String) {
+        override fun sumNumber(firstNumber: String, secondNumber: String) {
         getSumUseCase.execute(SumNumberObserver(), SumUseCase.Param(
             firstNumber = firstNumber,
             secondNumber = secondNumber
@@ -50,6 +54,12 @@ class HomeActivityViewModel(val getSumUseCase: SumUseCase) :
     override fun onCleared() {
         super.onCleared()
         getSumUseCase.dispose()
+    }
+
+    private fun updateList(listComment: List<Int>) {
+        val itemModel = mutableListOf<HomeActivityItemViewModel>()
+        itemModel.addAll(listComment.map { HomeActivityItemViewModel.create(it) })
+        this.listComment.onNext(itemModel)
     }
 
 
@@ -65,9 +75,10 @@ class HomeActivityViewModel(val getSumUseCase: SumUseCase) :
 
     }
 
-    inner class SumNumberObserver : DisposableSingleObserver<String>() {
-        override fun onSuccess(t: String) {
-            sumResult.onNext(t)
+    inner class SumNumberObserver : DisposableSingleObserver<List<Int>>() {
+        override fun onSuccess(t: List<Int>) {
+//            sumResult.onNext(t)
+            updateList(t)
         }
 
         override fun onError(e: Throwable) {

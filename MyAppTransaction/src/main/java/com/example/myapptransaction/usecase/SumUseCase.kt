@@ -13,8 +13,8 @@ class SumUseCase
 @Inject constructor(private val repository: TransactionRepository,
                     @Named(TagInjectConstant.SCHEDULER_EXECUTION) threadExecution: Scheduler,
                     @Named(TagInjectConstant.SCHEDULER_POST_EXECUTION) postExecutionThread: Scheduler)
-    : BaseUseCase.RxSingle<String, SumUseCase.Param>(threadExecution, postExecutionThread) {
-    override fun build(params: Param?): Single<String> {
+    : BaseUseCase.RxSingle<List<Int>, SumUseCase.Param>(threadExecution, postExecutionThread) {
+    override fun build(params: Param?): Single<List<Int>> {
         params?.let {
             return repository.test(firstNumber = it.firstNumber, secondNumber = it.secondNumber)
         }
